@@ -1,0 +1,27 @@
+{
+  "foteiAdminApp": {
+    "report": {
+      "home": {
+        "title": "Reports",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Report",
+        "createOrEditLabel": "Create or edit a Report",
+        "notFound": "No Reports found"
+      },
+      "created": "A new Report is created with identifier {{ param }}",
+      "updated": "A Report is updated with identifier {{ param }}",
+      "deleted": "A Report is deleted with identifier {{ param }}",
+      "rejected": "A Report is rejected with identifier {{ param }}",
+      "approved": "A Report is approved with identifier {{ param }}",
+      "detail": {
+        "title": "Report"
+      },
+      "id": "ID",
+      "reason": "Reason",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "status": "Status",
+      "post": "Post"
+    }
+  }
+}

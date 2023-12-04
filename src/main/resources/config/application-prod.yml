@@ -26,6 +26,8 @@ management:
         enabled: false
 
 spring:
+  application:
+    name: admin
   devtools:
     restart:
       enabled: false
@@ -33,8 +35,8 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: mongodb://localhost:27017
-      database: fotei_admin
+      uri: 'mongodb://${ENV_MONGO_USER}:${ENV_MONGO_PASSWORD}@${ENV_MONGO_HOST}:${ENV_MONGO_PORT}'
+      database: core
   mail:
     host: localhost
     port: 25

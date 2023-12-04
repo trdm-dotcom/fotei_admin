@@ -19,8 +19,12 @@ logging:
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
     com.doan.fotei: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.springframework.data.mongodb.repository.Query: DEBUG
 
 spring:
+  application:
+    name: admin
   devtools:
     restart:
       enabled: true
@@ -32,8 +36,8 @@ spring:
       indent-output: true
   data:
     mongodb:
-      uri: mongodb://localhost:27017
-      database: fotei_admin
+      uri: mongodb://admin:Slmz9RjECX@103.90.227.59:27017
+      database: core
   mail:
     host: localhost
     port: 25

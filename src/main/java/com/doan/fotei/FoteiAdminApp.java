@@ -1,5 +1,6 @@
 package com.doan.fotei;
 
+import com.doan.fotei.config.AppConf;
 import com.doan.fotei.config.ApplicationProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,7 +19,7 @@ import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ ApplicationProperties.class })
+@EnableConfigurationProperties({ ApplicationProperties.class, AppConf.class })
 public class FoteiAdminApp {
 
     private static final Logger log = LoggerFactory.getLogger(FoteiAdminApp.class);

@@ -41,6 +41,7 @@
     "prodDatabaseType": "mongodb",
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en"]
+    "languages": ["en"],
+    "entities": ["Post", "Report"]
   }
 }
