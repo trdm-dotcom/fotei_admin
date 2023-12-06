@@ -1,24 +1,159 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    restart: always
+    ports:
+      - 2181:2181
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    restart: always
+    ports:
+      - 9094:9094
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9094
+      - KAFKA_ADVERTISED_LISTENERS=INSIDE://kafka:9092,OUTSIDE://localhost:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+
   fotei_admin-app:
     image: fotei_admin
+    container_name: admin
+    restart: always
+    env_file: ./.env
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATA_MONGODB_URI=mongodb://fotei_admin-mongodb:27017
-      - SPRING_DATA_MONGODB_DATABASE=fotei_admin
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:Slmz9RjECX@103.90.227.59:27017
+      - SPRING_DATA_MONGODB_DATABASE=core
+      - JHIPSTER_SLEEP=30
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
     ports:
-      - 127.0.0.1:8080:8080
-  fotei_admin-mongodb:
-    image: mongo:4.4.4
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
+      - '8080:8080'
+
+  gateway:
+    container_name: gateway
+    restart: always
+    build: https://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@github.com/trdm-dotcom/gateway.git
     ports:
-      - 127.0.0.1:27017:27017
-    # volumes:
-    #   - ~/volumes/jhipster/fotei_admin/mongodb/:/data/db/
+      - '3000:3000'
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_MONGO_HOST=${ENV_MONGO_HOST}
+      - ENV_MONGO_PORT=${ENV_MONGO_PORT}
+      - ENV_MONGO_USER=${ENV_MONGO_USER}
+      - ENV_MONGO_PASSWORD=${ENV_MONGO_PASSWORD}
+      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      #   - mongo
+      #   - redis
+      - kafka
+
+  core:
+    container_name: core
+    restart: always
+    build: https://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@github.com/trdm-dotcom/core_v2.git
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_MONGO_HOST=${ENV_MONGO_HOST}
+      - ENV_MONGO_PORT=${ENV_MONGO_PORT}
+      - ENV_MONGO_USER=${ENV_MONGO_USER}
+      - ENV_MONGO_PASSWORD=${ENV_MONGO_PASSWORD}
+      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      #   - mongo
+      #   - redis
+      - kafka
+
+  user:
+    container_name: user
+    restart: always
+    build: https://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@github.com/trdm-dotcom/user_v2.git
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_MYSQL_HOST=${ENV_MYSQL_HOST}
+      - ENV_MYSQL_PORT=${ENV_MYSQL_PORT}
+      - ENV_MYSQL_USER=${ENV_MYSQL_USER}
+      - ENV_MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
+      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      #   - mysql
+      #   - redis
+      - kafka
+
+  otp:
+    container_name: otp
+    restart: always
+    build: https://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@github.com/trdm-dotcom/otp.git
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      #   - redis
+      - kafka
+
+  notification:
+    container_name: notification
+    restart: always
+    build: https://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@github.com/trdm-dotcom/notification.git
+    env_file: ./.env
+    environment:
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      - kafka
+
+  notification-manager:
+    container_name: notification-manager
+    restart: always
+    build: https://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@github.com/trdm-dotcom/notification-manager.git
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_MONGO_HOST=${ENV_MONGO_HOST}
+      - ENV_MONGO_PORT=${ENV_MONGO_PORT}
+      - ENV_MONGO_USER=${ENV_MONGO_USER}
+      - ENV_MONGO_PASSWORD=${ENV_MONGO_PASSWORD}
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+    depends_on:
+      #   - mongo
+      - kafka
+
+  content-moderation:
+    container_name: content-moderation
+    restart: always
+    build: https://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@github.com/trdm-dotcom/content-moderation.git
+    env_file: ./.env
+    environment:
+      - ENV_NODE_ID=0
+      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+      - SIGHTENGINE_API_USER=${SIGHTENGINE_API_USER}
+      - SIGHTENGINE_API_SECRET=${SIGHTENGINE_API_SECRET}
+      - SIGHTENGINE_TEXT_API_URL=${SIGHTENGINE_TEXT_API_URL}
+      - SIGHTENGINE_WORKFLOW_API_URL=${SIGHTENGINE_WORKFLOW_API_URL}
+      - SIGHTENGINE_WORKFLOW_ID=${SIGHTENGINE_WORKFLOW_ID}
+    depends_on:
+      - kafka
