@@ -98,3 +98,12 @@ jhipster:
 # ===================================================================
 
 # application:
+app:
+  clusterId: ${spring.application.name}
+  nodeId: '${spring.application.name}-0'
+  kafkaUrl: 'localhost:9094'
+  maxThread: 4
+  consumerCount: 3
+  topics:
+    user: user
+    core: core

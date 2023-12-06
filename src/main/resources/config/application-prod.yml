@@ -35,7 +35,7 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: 'mongodb://${ENV_MONGO_USER}:${ENV_MONGO_PASSWORD}@${ENV_MONGO_HOST}:${ENV_MONGO_PORT}'
+      uri: mongodb://admin:Slmz9RjECX@103.90.227.59:27017
       database: core
   mail:
     host: localhost
@@ -117,3 +117,12 @@ jhipster:
 # ===================================================================
 
 # application:
+app:
+  clusterId: ${spring.application.name}
+  nodeId: '${spring.application.name}-0'
+  kafkaUrl: 'kafka:9092'
+  maxThread: 4
+  consumerCount: 3
+  topics:
+    user: user
+    core: core
