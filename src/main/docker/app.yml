@@ -83,64 +83,64 @@ services:
       #   - redis
       - kafka
 
-  user:
-    container_name: user
-    restart: always
-    build: https://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@github.com/trdm-dotcom/user_v2.git
-    env_file: ./.env
-    environment:
-      - ENV_NODE_ID=0
-      - ENV_MYSQL_HOST=${ENV_MYSQL_HOST}
-      - ENV_MYSQL_PORT=${ENV_MYSQL_PORT}
-      - ENV_MYSQL_USER=${ENV_MYSQL_USER}
-      - ENV_MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
-      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
-      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
-      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
-    depends_on:
-      #   - mysql
-      #   - redis
-      - kafka
+  # user:
+  #   container_name: user
+  #   restart: always
+  #   build: https://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@github.com/trdm-dotcom/user_v2.git
+  #   env_file: ./.env
+  #   environment:
+  #     - ENV_NODE_ID=0
+  #     - ENV_MYSQL_HOST=${ENV_MYSQL_HOST}
+  #     - ENV_MYSQL_PORT=${ENV_MYSQL_PORT}
+  #     - ENV_MYSQL_USER=${ENV_MYSQL_USER}
+  #     - ENV_MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
+  #     - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+  #     - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+  #     - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+  #   depends_on:
+  #     #   - mysql
+  #     #   - redis
+  #     - kafka
 
-  otp:
-    container_name: otp
-    restart: always
-    build: https://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@github.com/trdm-dotcom/otp.git
-    env_file: ./.env
-    environment:
-      - ENV_NODE_ID=0
-      - ENV_REDIS_HOST=${ENV_REDIS_HOST}
-      - ENV_REDIS_PORT=${ENV_REDIS_PORT}
-      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
-    depends_on:
-      #   - redis
-      - kafka
+  # otp:
+  #   container_name: otp
+  #   restart: always
+  #   build: https://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@github.com/trdm-dotcom/otp.git
+  #   env_file: ./.env
+  #   environment:
+  #     - ENV_NODE_ID=0
+  #     - ENV_REDIS_HOST=${ENV_REDIS_HOST}
+  #     - ENV_REDIS_PORT=${ENV_REDIS_PORT}
+  #     - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+  #   depends_on:
+  #     #   - redis
+  #     - kafka
 
-  notification:
-    container_name: notification
-    restart: always
-    build: https://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@github.com/trdm-dotcom/notification.git
-    env_file: ./.env
-    environment:
-      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
-    depends_on:
-      - kafka
+  # notification:
+  #   container_name: notification
+  #   restart: always
+  #   build: https://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@github.com/trdm-dotcom/notification.git
+  #   env_file: ./.env
+  #   environment:
+  #     - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+  #   depends_on:
+  #     - kafka
 
-  notification-manager:
-    container_name: notification-manager
-    restart: always
-    build: https://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@github.com/trdm-dotcom/notification-manager.git
-    env_file: ./.env
-    environment:
-      - ENV_NODE_ID=0
-      - ENV_MONGO_HOST=${ENV_MONGO_HOST}
-      - ENV_MONGO_PORT=${ENV_MONGO_PORT}
-      - ENV_MONGO_USER=${ENV_MONGO_USER}
-      - ENV_MONGO_PASSWORD=${ENV_MONGO_PASSWORD}
-      - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
-    depends_on:
-      #   - mongo
-      - kafka
+  # notification-manager:
+  #   container_name: notification-manager
+  #   restart: always
+  #   build: https://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@github.com/trdm-dotcom/notification-manager.git
+  #   env_file: ./.env
+  #   environment:
+  #     - ENV_NODE_ID=0
+  #     - ENV_MONGO_HOST=${ENV_MONGO_HOST}
+  #     - ENV_MONGO_PORT=${ENV_MONGO_PORT}
+  #     - ENV_MONGO_USER=${ENV_MONGO_USER}
+  #     - ENV_MONGO_PASSWORD=${ENV_MONGO_PASSWORD}
+  #     - ENV_KAFKA_URLS=${ENV_KAFKA_URLS}
+  #   depends_on:
+  #     #   - mongo
+  #     - kafka
 
   content-moderation:
     container_name: content-moderation
